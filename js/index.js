@@ -1,5 +1,5 @@
 import Player from "../classes/Player.js";
-import Ingredients from "../classes/Ingredient.js"; 
+import Ingredients from "../classes/Ingredient.js";
 
 document.getElementById("start-button").addEventListener("click", () => {
   startGame();
@@ -9,9 +9,9 @@ const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 const myPlayer = new Player(ctx, canvas);
 const ingredients = [];
-setInterval(() => ingredients.push(new Ingredients(ctx)),2000);
+setInterval(() => ingredients.push(new Ingredients(ctx)), 2000);
 const grabbedIngredients = [];
-
+const ingredientsDiv = document.querySelector("#grabbedIngredients");
 
 function startGame() {
   const gameInterval = setInterval(() => {
@@ -21,8 +21,8 @@ function startGame() {
     ctx.drawImage(backgroundImg, 0, 0, canvas.clientWidth, canvas.clientHeight);
     myPlayer.drawPlayer();
     ingredients.forEach((ingredient) => {
-    ingredient.moveIngredient()
-    ingredient.draw()
+      ingredient.moveIngredient();
+      ingredient.draw();
     });
   }, 1000 / 60);
 }
@@ -32,32 +32,42 @@ document.addEventListener("keydown", function (event) {
     myPlayer.moveLeft();
   } else if (event.code === "ArrowRight") {
     myPlayer.moveRight();
-  }});
-
-  function grabFood() {
-    ingredients.some(function(ingredient) {
-      const grabbed = myPlayer.crashWith(ingredient);
-      if (grabbed) {
-        ingredient.isGrabbed = true;
-        ingredient.speed = 0;
-        grabbedIngredients.push(ingredient);
-        console.log("you grabbed something!");
-        console.log(grabbedIngredients);
-        return true;
-      }
-      return false;
-    });
   }
+});
 
-  //function grabFood(){
-  //  const grabbed = ingredients.some(function(ingredient){
-  //    return myPlayer.crashWith(ingredient);
-  //  });
-  //  if (grabbed) {
-  //    grabbedIngredients.push(ingredient);
-  //    console.log("you grabbed something!");
-  //    console.log(grabbedIngredients);
-  //  }
-  //}
+function grabFood() {
+  ingredients.some(function (ingredient) {
+    const grabbed = myPlayer.crashWith(ingredient);
+    if (grabbed) {
+      ingredient.isGrabbed = true;
+      ingredient.speed = 0;
+      grabbedIngredients.push(ingredient);
+      ingredients.splice(ingredients.indexOf(ingredient), 1);
+      showGrabbedIngredients();
+      console.log("you grabbed something!");
+      console.log(grabbedIngredients);
+      return true;
+    }
+    return false;
+  });
+}
 
+function showGrabbedIngredients() {
+  ingredientsDiv.innerHTML = "";
+  grabbedIngredients.forEach((ingredient) => {
+    const ingredientImg = new Image();
+    ingredientImg.src = ingredient.ingredient.src;
+    ingredientsDiv.appendChild(ingredientImg);
+  });
+}
 
+//function grabFood(){
+//  const grabbed = ingredients.some(function(ingredient){
+//    return myPlayer.crashWith(ingredient);
+//  });
+//  if (grabbed) {
+//    grabbedIngredients.push(ingredient);
+//    console.log("you grabbed something!");
+//    console.log(grabbedIngredients);
+//  }
+//}
