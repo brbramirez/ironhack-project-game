@@ -1,12 +1,13 @@
 const foodArr = ["src/images/apple.png", "src/images/burger.png", "src/images/cupTea.png", "src/images/hotDog.png", "src/images/watermelon.png"];
 
 class Ingredients {
-    constructor(ctx){
-        this.x = Math.floor(Math.random() * 550 - 70);
+    constructor(ctx, scoreCounter){
+        this.x = Math.floor(Math.random() * 500);
         this.y = 0;
         this.width = 60;
         this.height = 60;
         this.ctx = ctx;
+        this.scoreCounter = scoreCounter;
         this.ingredient = null; 
         this.speed = 3;
         this.isGrabbed = false;
@@ -27,14 +28,34 @@ class Ingredients {
     }
 
     moveIngredient() {
-        if (!this.isGrabbed) {
-          this.y += this.speed;
-    }
+
+        if (!this.isGrabbed && this.scoreCounter >= 28){
+            this.y += this.speed + 7;
+        }
+        else if (!this.isGrabbed && this.scoreCounter >= 24){
+            this.y += this.speed + 6;
+        }
+        else if (!this.isGrabbed && this.scoreCounter >= 20){
+            this.y += this.speed + 5;
+        }
+        else if (!this.isGrabbed && this.scoreCounter >= 16){
+            this.y += this.speed + 4;
+        }
+        else if (!this.isGrabbed && this.scoreCounter >= 12){
+            this.y += this.speed + 3;
+        }
+         else if (!this.isGrabbed && this.scoreCounter >= 8){
+            this.y += this.speed + 2;
+        }
+
+        else if(!this.isGrabbed && this.scoreCounter >= 4){
+            this.y += this.speed + 1;
+        }
+        else if(!this.isGrabbed && this.scoreCounter >= 0 && this.scoreCounter < 4){
+            this.y += this.speed;
+            }
+
 }
-    //moveIngredient(){
-    //    this.y += 5;
-    //}
-    
     left() {
         return this.x;
     }

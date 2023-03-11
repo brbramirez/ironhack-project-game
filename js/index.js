@@ -9,12 +9,25 @@ const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 const myPlayer = new Player(ctx, canvas);
 const ingredients = [];
-setInterval(() => ingredients.push(new Ingredients(ctx)), 2000);
 const grabbedIngredients = [];
 const ingredientsDiv = document.querySelector("#grabbedIngredients");
+let scoreCounter = 0;
+
+let missedCounter = [];
+
+setInterval(() => ingredients.push(new Ingredients(ctx, scoreCounter)), 2000);
+
+const gameOverImg = new Image();
+gameOverImg.src = "/src/images/game-over.png";
+
+const audio = new Audio('/src/sounds/335584__hmmm101__pixel-song-8.wav');
+function playSound(){
+    audio.play();
+}
 
 function startGame() {
   const gameInterval = setInterval(() => {
+    playSound()
     grabFood();
     const backgroundImg = new Image();
     backgroundImg.src = "src/images/Background-game-img.jpg";
@@ -23,7 +36,15 @@ function startGame() {
     ingredients.forEach((ingredient) => {
       ingredient.moveIngredient();
       ingredient.draw();
+      if (missedCounter.length === 3) { 
+          clearInterval(gameInterval); 
+          audio.pause();
+          ctx.drawImage(gameOverImg, 150, 50);
+        }
     });
+    ctx.fillStyle = 'white';
+    ctx.font = '25px Arial';
+    ctx.fillText(`Score: ${scoreCounter}`, 10, 30);
   }, 1000 / 60);
 }
 
@@ -43,10 +64,12 @@ function grabFood() {
       ingredient.speed = 0;
       grabbedIngredients.push(ingredient);
       ingredients.splice(ingredients.indexOf(ingredient), 1);
+      scoreCounter ++;
       showGrabbedIngredients();
-      console.log("you grabbed something!");
-      console.log(grabbedIngredients);
       return true;
+    } else if (ingredient.y >= canvas.height) {
+      ingredients.splice(ingredients.indexOf(ingredient), 1);
+      missedCounter.push(ingredient);
     }
     return false;
   });
@@ -61,13 +84,5 @@ function showGrabbedIngredients() {
   });
 }
 
-//function grabFood(){
-//  const grabbed = ingredients.some(function(ingredient){
-//    return myPlayer.crashWith(ingredient);
-//  });
-//  if (grabbed) {
-//    grabbedIngredients.push(ingredient);
-//    console.log("you grabbed something!");
-//    console.log(grabbedIngredients);
-//  }
-//}
+
+

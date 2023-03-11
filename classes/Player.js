@@ -5,6 +5,7 @@ class Player {
     this.y = canvas.height - this.height - 10;
     this.width = 90;
     this.ctx = ctx;
+    this.speed = 10;
     this.playerChar = new Image();
     this.playerChar.src = "src/images/player.png";
   }
