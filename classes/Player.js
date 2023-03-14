@@ -1,13 +1,14 @@
 class Player {
-  constructor(ctx, canvas) {
+  constructor(ctx, canvas, scoreCounter) {
     this.x = 225;
     this.height = 110;
     this.y = canvas.height - this.height - 10;
     this.width = 90;
     this.ctx = ctx;
-    this.speed = 10;
+    this.speed = 10 + scoreCounter;
     this.playerChar = new Image();
     this.playerChar.src = "src/images/player.png";
+    this.scoreCounter = scoreCounter;
   }
 
   drawPlayer() {
@@ -21,28 +22,33 @@ class Player {
   }
 
   moveRight() {
-    this.x += 10;
+    if(this.x < 480) {
+      this.x += this.speed;
+    }
   }
+  
   moveLeft() {
-    this.x -= 10;
+    if(this.x > -3) {
+      this.x -= this.speed;
+    }
   }
 
   left() {
     return this.x;
   }
-right() {
+  right() {
     return this.x + this.width;
   }
-top() {
+  top() {
     return this.y;
   }
-bottom() {
+  bottom() {
     return this.y + this.height;
-}
+  }
 
-crashWith(ingredient) {
-  return !(this.bottom() < ingredient.top() || this.top() > ingredient.bottom() || this.right() < ingredient.left() || this.left() > ingredient.right());
- }
+  crashWith(ingredient) {
+    return !(this.bottom() < ingredient.top() || this.top() > ingredient.bottom() || this.right() < ingredient.left() || this.left() > ingredient.right());
+  }
 
 }
 

@@ -1,66 +1,75 @@
+//Import Classes
 import Player from "../classes/Player.js";
 import Ingredients from "../classes/Ingredient.js";
 
+//START event listener
 document.getElementById("start-button").addEventListener("click", () => {
   startGame();
 });
 
+//Initializing the variables
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
-const myPlayer = new Player(ctx, canvas);
+let scoreCounter = 0;
+let coffeeCounter = 0; 
 const ingredients = [];
 const grabbedIngredients = [];
-const ingredientsDiv = document.querySelector("#grabbedIngredients");
-let scoreCounter = 0;
-
 let missedCounter = [];
 
-setInterval(() => ingredients.push(new Ingredients(ctx, scoreCounter)), 2000);
+//Query Selectors
+const ingredientsDiv = document.querySelector("#grabbedIngredients");
 
+//Images and audio
+const myPlayer = new Player(ctx, canvas, scoreCounter);
 const gameOverImg = new Image();
 gameOverImg.src = "/src/images/game-over.png";
+const backgroundImg = new Image();
+backgroundImg.src = "src/images/Background-game-img.jpg";
+const threeHeartsImg = new Image();
+threeHeartsImg.src = "/src/images/3hearts.png"
+const twoHeartsImg = new Image();
+twoHeartsImg.src = "/src/images/2hearts.png";
 
 const audio = new Audio('/src/sounds/335584__hmmm101__pixel-song-8.wav');
 function playSound(){
     audio.play();
+    audio.loop = true;
 }
 
+//Game ppal function
 function startGame() {
   const gameInterval = setInterval(() => {
+    paintHearts();
     playSound()
     grabFood();
-    const backgroundImg = new Image();
-    backgroundImg.src = "src/images/Background-game-img.jpg";
     ctx.drawImage(backgroundImg, 0, 0, canvas.clientWidth, canvas.clientHeight);
     myPlayer.drawPlayer();
     ingredients.forEach((ingredient) => {
       ingredient.moveIngredient();
       ingredient.draw();
-      if (missedCounter.length === 3) { 
-          clearInterval(gameInterval); 
-          audio.pause();
-          ctx.drawImage(gameOverImg, 150, 50);
-        }
     });
+    if (missedCounter.length === 3) { 
+      clearInterval(gameInterval); 
+      audio.pause();
+      ctx.drawImage(gameOverImg, 150, 50);
+    }
+    if(coffeeCounter === 5){
+      clearInterval(gameInterval); 
+      audio.pause();
+      ctx.fillText(`you won bish`, 30, 30);
+    }
     ctx.fillStyle = 'white';
     ctx.font = '25px Arial';
     ctx.fillText(`Score: ${scoreCounter}`, 10, 30);
   }, 1000 / 60);
+  setInterval(() => ingredients.push(new Ingredients(ctx, scoreCounter)), 2000);
 }
 
-document.addEventListener("keydown", function (event) {
-  if (event.code === "ArrowLeft") {
-    myPlayer.moveLeft();
-  } else if (event.code === "ArrowRight") {
-    myPlayer.moveRight();
-  }
-});
-
+//Function to grab the food
 function grabFood() {
   ingredients.some(function (ingredient) {
     const grabbed = myPlayer.crashWith(ingredient);
     if (grabbed) {
-      ingredient.isGrabbed = true;
       ingredient.speed = 0;
       grabbedIngredients.push(ingredient);
       ingredients.splice(ingredients.indexOf(ingredient), 1);
@@ -75,6 +84,8 @@ function grabFood() {
   });
 }
 
+
+//Function that stores the grabbed food
 function showGrabbedIngredients() {
   ingredientsDiv.innerHTML = "";
   grabbedIngredients.forEach((ingredient) => {
@@ -83,6 +94,31 @@ function showGrabbedIngredients() {
     ingredientsDiv.appendChild(ingredientImg);
   });
 }
+
+//Paint Hearts
+//function paintHearts(){
+//  if(missedCounter.length === 0){
+//    ctx.drawImage(threeHeartsImg, 50, 50);
+//  }
+//  if(missedCounter.length === 1)
+//    ctx.drawImage(twoHeartsImg, 50,50);
+//}
+
+//Controls event listener
+document.addEventListener("keydown", function (event) {
+  if (event.code === "ArrowLeft") {
+    myPlayer.moveLeft();
+  } else if (event.code === "ArrowRight") {
+    myPlayer.moveRight();
+  }
+});
+
+
+
+
+
+    
+
 
 
 

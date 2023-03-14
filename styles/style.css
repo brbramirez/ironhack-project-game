@@ -11,14 +11,14 @@ body {
   justify-content: center;
   margin-top: 10px;
 }
+
 .flex-row {
   margin: 0 auto;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  border: 8px solid red;
+  border: 8px solid rgb(133, 0, 0);
 }
-
 
 #grabbedIngredients{
   background-image: url("/src/images/color-bg.png");
@@ -35,5 +35,9 @@ body {
   border: none;
   background-color: transparent;
   margin: 0 auto;
+}
+
+#canvas {
+  background-image: url("/src/images/Background-img.jpg");
 }
 

@@ -1,4 +1,4 @@
-const foodArr = ["src/images/apple.png", "src/images/burger.png", "src/images/cupTea.png", "src/images/hotDog.png", "src/images/watermelon.png"];
+const foodArr = ["src/images/apple.png", "src/images/burger.png", "src/images/cupCoffee.png", "src/images/hotDog.png", "src/images/watermelon.png"];
 
 class Ingredients {
     constructor(ctx, scoreCounter){
@@ -7,10 +7,11 @@ class Ingredients {
         this.width = 60;
         this.height = 60;
         this.ctx = ctx;
+        this.name = name;
         this.scoreCounter = scoreCounter;
         this.ingredient = null; 
         this.speed = 3;
-        this.isGrabbed = false;
+        this.name = "coffee";
     }
 
     draw(){
@@ -29,33 +30,33 @@ class Ingredients {
 
     moveIngredient() {
 
-        if (!this.isGrabbed && this.scoreCounter >= 28){
-            this.y += this.speed + 7;
+        if (this.scoreCounter >= 28){
+            this.y += this.speed + 6.5;
         }
-        else if (!this.isGrabbed && this.scoreCounter >= 24){
+        else if (this.scoreCounter >= 24){
             this.y += this.speed + 6;
         }
-        else if (!this.isGrabbed && this.scoreCounter >= 20){
+        else if (this.scoreCounter >= 20){
             this.y += this.speed + 5;
         }
-        else if (!this.isGrabbed && this.scoreCounter >= 16){
+        else if (this.scoreCounter >= 16){
             this.y += this.speed + 4;
         }
-        else if (!this.isGrabbed && this.scoreCounter >= 12){
+        else if (this.scoreCounter >= 12){
             this.y += this.speed + 3;
         }
-         else if (!this.isGrabbed && this.scoreCounter >= 8){
+         else if (this.scoreCounter >= 8){
             this.y += this.speed + 2;
         }
 
-        else if(!this.isGrabbed && this.scoreCounter >= 4){
-            this.y += this.speed + 1;
+        else if(this.scoreCounter >= 4){
+           this.y += this.speed + 1;
         }
-        else if(!this.isGrabbed && this.scoreCounter >= 0 && this.scoreCounter < 4){
-            this.y += this.speed;
-            }
+        else if(this.scoreCounter >= 0 && this.scoreCounter < 4){
+           this.y += this.speed;
+        }
 
-}
+    }
     left() {
         return this.x;
     }
@@ -64,7 +65,7 @@ class Ingredients {
     }
     top() {
         return this.y;
-        }
+    }
     bottom() {
     return this.y + this.height;
     }
