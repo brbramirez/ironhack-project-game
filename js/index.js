@@ -29,8 +29,13 @@ const threeHeartsImg = new Image();
 threeHeartsImg.src = "/src/images/3hearts.png"
 const twoHeartsImg = new Image();
 twoHeartsImg.src = "/src/images/2hearts.png";
-
+const oneHeartImg = new Image();
+oneHeartImg.src = "/src/images/1heart.png";
+const youWinImg = new Image();
+youWinImg.src = "/src/images/you-win.png";
+const bell = new Audio('/src/sounds/bell-output.mp3');
 const audio = new Audio('/src/sounds/335584__hmmm101__pixel-song-8.wav');
+
 function playSound(){
     audio.play();
     audio.loop = true;
@@ -39,7 +44,6 @@ function playSound(){
 //Game ppal function
 function startGame() {
   const gameInterval = setInterval(() => {
-    paintHearts();
     playSound()
     grabFood();
     ctx.drawImage(backgroundImg, 0, 0, canvas.clientWidth, canvas.clientHeight);
@@ -48,15 +52,16 @@ function startGame() {
       ingredient.moveIngredient();
       ingredient.draw();
     });
+    paintHearts();
     if (missedCounter.length === 3) { 
       clearInterval(gameInterval); 
       audio.pause();
       ctx.drawImage(gameOverImg, 150, 50);
     }
-    if(coffeeCounter === 5){
+    if(coffeeCounter === 5) {
       clearInterval(gameInterval); 
       audio.pause();
-      ctx.fillText(`you won bish`, 30, 30);
+      ctx.drawImage(youWinImg, 5, 50);
     }
     ctx.fillStyle = 'white';
     ctx.font = '25px Arial';
@@ -70,20 +75,21 @@ function grabFood() {
   ingredients.some(function (ingredient) {
     const grabbed = myPlayer.crashWith(ingredient);
     if (grabbed) {
+      bell.play();
       ingredient.speed = 0;
       grabbedIngredients.push(ingredient);
       ingredients.splice(ingredients.indexOf(ingredient), 1);
       scoreCounter ++;
       showGrabbedIngredients();
+      if(ingredient.name === "coffee") coffeeCounter++;
       return true;
     } else if (ingredient.y >= canvas.height) {
       ingredients.splice(ingredients.indexOf(ingredient), 1);
       missedCounter.push(ingredient);
-    }
+    } 
     return false;
   });
 }
-
 
 //Function that stores the grabbed food
 function showGrabbedIngredients() {
@@ -96,13 +102,11 @@ function showGrabbedIngredients() {
 }
 
 //Paint Hearts
-//function paintHearts(){
-//  if(missedCounter.length === 0){
-//    ctx.drawImage(threeHeartsImg, 50, 50);
-//  }
-//  if(missedCounter.length === 1)
-//    ctx.drawImage(twoHeartsImg, 50,50);
-//}
+function paintHearts(){
+  if(missedCounter.length === 0) ctx.drawImage(threeHeartsImg, 450, 10);
+  if(missedCounter.length === 1) ctx.drawImage(twoHeartsImg, 450,10);
+  if(missedCounter.length === 2) ctx.drawImage(oneHeartImg, 450,10);
+}
 
 //Controls event listener
 document.addEventListener("keydown", function (event) {

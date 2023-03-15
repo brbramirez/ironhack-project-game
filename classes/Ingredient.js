@@ -1,4 +1,9 @@
-const foodArr = ["src/images/apple.png", "src/images/burger.png", "src/images/cupCoffee.png", "src/images/hotDog.png", "src/images/watermelon.png"];
+const foodArr = [
+    {name: "apple", img:"src/images/apple.png"},
+    {name: "burger", img:"src/images/burger.png"},
+    {name: "coffee", img:"src/images/cupCoffee.png"},
+    {name: "hotDog", img:"src/images/hotDog.png"},
+    {name: "watermelon", img:"src/images/watermelon.png"}];
 
 class Ingredients {
     constructor(ctx, scoreCounter){
@@ -7,17 +12,18 @@ class Ingredients {
         this.width = 60;
         this.height = 60;
         this.ctx = ctx;
-        this.name = name;
         this.scoreCounter = scoreCounter;
         this.ingredient = null; 
         this.speed = 3;
-        this.name = "coffee";
+        this.name = null;
     }
 
     draw(){
+        const foodSelector = foodArr[Math.floor(Math.random() * 5)];
         if (!this.ingredient) {
             this.ingredient = new Image();
-            this.ingredient.src = foodArr[Math.floor(Math.random() * 5)];
+            this.ingredient.src = foodSelector.img;
+            this.name = foodSelector.name;
         }
         this.ctx.drawImage(
             this.ingredient,
