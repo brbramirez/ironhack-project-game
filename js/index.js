@@ -84,9 +84,9 @@ function grabFood() {
       if(ingredient.name === "coffee") coffeeCounter++;
       return true;
     } else if (ingredient.y >= canvas.height) {
-      ingredients.splice(ingredients.indexOf(ingredient), 1);
-      missedCounter.push(ingredient);
-    } 
+        ingredients.splice(ingredients.indexOf(ingredient), 1);
+        missedCounter.push(ingredient);
+      } 
     return false;
   });
 }
@@ -110,11 +110,8 @@ function paintHearts(){
 
 //Controls event listener
 document.addEventListener("keydown", function (event) {
-  if (event.code === "ArrowLeft") {
-    myPlayer.moveLeft();
-  } else if (event.code === "ArrowRight") {
-    myPlayer.moveRight();
-  }
+  if (event.code === "ArrowLeft") myPlayer.moveLeft();
+  else if (event.code === "ArrowRight") myPlayer.moveRight();
 });
 
 

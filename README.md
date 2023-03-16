@@ -10,4 +10,4 @@ Good luck!
 ## Controls
 
 - Move left and right with <= =>
-- Careful, you only have three lives! 
+- Careful, you only have three lives!
