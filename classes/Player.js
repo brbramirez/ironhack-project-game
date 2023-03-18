@@ -22,7 +22,7 @@ class Player {
   }
 
   moveRight() {
-    if(this.x < 480) this.x += this.speed;
+    if(this.x < 470) this.x += this.speed;
   }
   
   moveLeft() {
