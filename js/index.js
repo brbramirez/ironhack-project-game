@@ -68,6 +68,9 @@ function startGame() {
     ctx.fillText(`Score: ${scoreCounter}`, 10, 30);
   }, 1000 / 60);
   setInterval(() => ingredients.push(new Ingredients(ctx, scoreCounter)), 2000);
+  document.getElementById("start-button").addEventListener("click", () => {
+    location.reload();
+  });
 }
 
 //Function to grab the food
